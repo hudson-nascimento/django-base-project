@@ -1,0 +1,7 @@
+# Python
+__pycache__
+.pyc
+
+# Dev settings
+.idea
+*.sqlite3
