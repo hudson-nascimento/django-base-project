@@ -11,6 +11,9 @@ autopep8 = "*"
 django = "*"
 django-environ = "*"
 dj-database-url = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.7"
