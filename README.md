@@ -1,0 +1,1 @@
+## A simple base to start new Django project
