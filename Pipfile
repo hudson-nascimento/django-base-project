@@ -11,9 +11,11 @@ autopep8 = "*"
 django = "*"
 django-environ = "*"
 dj-database-url = "*"
-djangorestframework = "*"
+djangorestframework = "==3.9"
 markdown = "*"
 django-filter = "*"
+drf-yasg = "*"
+packaging = "*"
 
 [requires]
 python_version = "3.7"
