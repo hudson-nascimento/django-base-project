@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, re_path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -37,4 +38,7 @@ urlpatterns = [
     path('api/auth/verify/', TokenVerifyView.as_view(), name='token-verify'),
 ]
 
-
+urlpatterns = [
+    path('', lambda r: redirect('schema-swagger-ui')),
+    path('v1/', include(urlpatterns)),
+]
