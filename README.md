@@ -47,7 +47,7 @@ $ pipenv run python manage.py runserver # start dev server
 ## Built With
 
 * [Django 2.2](https://docs.djangoproject.com/en/2.2/) - The web framework used
-* [Pip (Through pipenv)](https://maven.apache.org/) - Dependency Management
+* [Pip (Through pipenv)](https://github.com/pypa/pipenv) - Dependency Management
 * [Pyenv](https://github.com/pyenv/pyenv) - Python version Management
 * [Django REST Framework](https://rometools.github.io/rome/) - Used to create web api
 * [DRF Generators](https://github.com/brobin/drf-generators) - Used to generate DRF code (serializers, views, urls and more)
