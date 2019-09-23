@@ -49,6 +49,14 @@ INSTALLED_APPS = [
     'drf_yasg',
 ]
 
+# Dev packages
+if DEBUG:
+    INSTALLED_APPS += [
+        # DRF Generators
+        # https://github.com/brobin/drf-generators
+        'drf_generators',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -200,11 +208,10 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER, False)
 # Django REST Framework settings
 #https://www.django-rest-framework.org/
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     )
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 15
+}
 
 # Simple JWT settings (default)
 #https://github.com/davesque/django-rest-framework-simplejwt
