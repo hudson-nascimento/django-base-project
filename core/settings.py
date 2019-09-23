@@ -11,22 +11,27 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
+import environ
+from core.utils import env
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = environ.Path(__file__) - 3
+if os.path.exists(os.path.join(BASE_DIR, '.env')):
+    environ.Env.read_env('.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f^++f=+h(pml-6(*iw*!1b+_r97x+c%l!jdlm6!p9&ce%i-%^m'
+SECRET_KEY = env('SECRET_KEY', 'f^++f=+h(pml-6(*iw*!1b+_r97x+c%l!jdlm6!p9&ce%i-%^m', False)
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ADMINS = env('ADMINS', ())
 
+ALLOWED_HOSTS = str(env('ALLOWED_HOSTS', '*', False)).split(',')
 
 # Application definition
 
@@ -74,10 +79,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(default='sqlite:///development.sqlite')
 }
 
 
@@ -99,22 +101,94 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+if env('CONSOLE_DEBUG', False):
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'filters': {
+            'require_debug_false': {
+                '()': 'django.utils.log.RequireDebugFalse',
+            },
+            'require_debug_true': {
+                '()': 'django.utils.log.RequireDebugTrue',
+            },
+        },
+        'formatters': {
+            'django.server': {
+                '()': 'django.utils.log.ServerFormatter',
+                'format': '[%(server_time)s] %(message)s',
+            }
+        },
+        'handlers': {
+            'console': {
+                'level': 'INFO',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+            },
+            'console_debug_false': {
+                'level': 'ERROR',
+                'filters': ['require_debug_false'],
+                'class': 'logging.StreamHandler',
+            },
+            'django.server': {
+                'level': 'INFO',
+                'class': 'logging.StreamHandler',
+                'formatter': 'django.server',
+            },
+            'mail_admins': {
+                'level': 'ERROR',
+                'filters': ['require_debug_false'],
+                'class': 'django.utils.log.AdminEmailHandler'
+            }
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console', 'console_debug_false', 'mail_admins'],
+                'level': 'INFO',
+            },
+            'django.server': {
+                'handlers': ['django.server'],
+                'level': 'INFO',
+                'propagate': False,
+            }
+        }
+    }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env('LANGUAGE_CODE', 'pt-BR', False)
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env('TIME_ZONE', 'America/Sao_Paulo', False)
 
-USE_I18N = True
+USE_I18N = env('USE_I18N', True)
 
-USE_L10N = True
+USE_L10N = env('USE_L10N', True)
 
-USE_TZ = True
+USE_TZ = env('USE_TZ', True)
+
+USE_THOUSAND_SEPARATOR = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+# Email settings
+# https://docs.djangoproject.com/en/2.2/topics/email/
+
+EMAIL_BACKEND = env('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend', False)
+EMAIL_HOST = env('EMAIL_HOST', 'smtp.sendgrid.net', False)
+EMAIL_PORT = env('EMAIL_PORT', 587, False)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', 'apikey', False)
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', 'your-password', False)
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
+EMAIL_USE_SSL = env('EMAIL_USE_SSL', False)
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER, False)
+

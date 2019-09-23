@@ -5,3 +5,7 @@ __pycache__
 # Dev settings
 .idea
 *.sqlite3
+*.sqlite
+
+# Env settings
+.env
