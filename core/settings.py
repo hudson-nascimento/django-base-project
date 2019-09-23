@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Dependencies
     'rest_framework',
     'drf_yasg',
+    'corsheaders',
 ]
 
 # Dev packages
@@ -65,6 +66,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # django-cors-headers
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -241,3 +246,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
+# Django cors headers
+# https://github.com/adamchainz/django-cors-headers
+CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST', [], False)

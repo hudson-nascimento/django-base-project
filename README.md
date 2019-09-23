@@ -51,7 +51,7 @@ $ pipenv run python manage.py runserver # start dev server
 * [Pyenv](https://github.com/pyenv/pyenv) - Python version Management
 * [Django REST Framework](https://rometools.github.io/rome/) - Used to create web api
 * [DRF Generators](https://github.com/brobin/drf-generators) - Used to generate DRF code (serializers, views, urls and more)
-
+* [Django cors headers](https://github.com/adamchainz/django-cors-headers) - App that adds Cross-Origin Resource Sharing (CORS) headers to responses.
 
 ## Author
 
